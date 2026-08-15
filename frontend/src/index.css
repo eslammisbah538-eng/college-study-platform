@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-paper-light dark:bg-paper-dark text-ink-light dark:text-ink-dark font-body transition-colors duration-300;
+    }
+
+    ::selection {
+        @apply bg-accent/40;
+    }
+
+    /* احترام تفضيل المستخدم بتقليل الحركة */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+@layer components {
+    /*
+     * العنصر البصري المميز في المشروع: "فاصل الملف" (Folder Tab)
+     * زاوية علوية مقصوصة بتفتكرك بفاصل الدوسيه الفعلي
+     * مستخدم في بطاقات المواد والتصنيفات
+     */
+    .folder-tab-card {
+        position: relative;
+        clip-path: polygon(0 0, 78% 0, 88% 10%, 100% 10%, 100% 100%, 0 100%);
+    }
+
+    .focus-ring {
+        @apply outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper-light dark:focus-visible:ring-offset-paper-dark;
+    }
+
+    .input-field {
+        @apply focus-ring w-full rounded-xl border border-ink-light/10 dark:border-ink-dark/10 bg-surface-light dark:bg-surface-dark px-4 py-2.5 text-sm placeholder:text-muted;
+    }
+}
