@@ -19,7 +19,7 @@ export default function Navbar() {
                     <Link to="/upload">
                         <Button variant="accent" className="inline-flex">
                             <Upload className="h-4 w-4" />
-                            <span className="hidden xs:inline">ارفع ملف</span>
+                         <span className="hidden xs:inline">ارفع ملف</span>
                         </Button>
                     </Link>
                     <ThemeToggle />
