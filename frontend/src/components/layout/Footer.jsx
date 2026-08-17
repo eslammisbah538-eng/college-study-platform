@@ -1,15 +1,20 @@
-import { Link } from 'react-router-dom';
-
 export default function Footer() {
     return (
-        <footer className="mt-16 border-t border-ink-light/10 dark:border-ink-dark/10 py-8">
-            <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 text-center text-sm text-muted sm:px-6">
-                <p>منصة الطالب — كل مادتك في مكان واحد</p>
+        <footer className="mt-16 border-t border-ink-light/10 dark:border-ink-dark/10 py-6">
+            <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted">
                 <p>
-                    عايز تضيف ملف مش موجود؟{' '}
-                    <Link to="/upload" className="font-bold text-primary-500 hover:underline">
-                        ارفعه دلوقتي
-                    </Link>
+                    Developed &amp; Designed by{' '}
+                    
+                        href="https://wa.me/201103023916"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-primary-600 hover:underline"
+                    >
+                        Islam Misbah
+                    </a>
+                </p>
+                <p className="mt-1 text-xs opacity-70">
+                    © {new Date().getFullYear()} منصة الطالب. جميع الحقوق محفوظة.
                 </p>
             </div>
         </footer>
