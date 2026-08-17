@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { UploadCloud, CheckCircle2 } from 'lucide-react';
 import Button from '../common/Button';
 import CategoryIcon from '../files/CategoryIcon';
+import StructurePicker from '../admin/StructurePicker';
 import { useFetch } from '../../hooks/useFetch';
 import { fileService } from '../../services/fileService';
 import { uploadService } from '../../services/uploadService';
+import { subjectService } from '../../services/subjectService';
+import { useEffect } from 'react';
 
 const FILE_TYPES = [
     { value: 'pdf', label: 'PDF' },
-    { value: 'video', label: 'فيديو' },
     { value: 'youtube_link', label: 'رابط يوتيوب' },
     { value: 'image', label: 'صورة' },
     { value: 'code', label: 'كود' },
@@ -16,6 +18,9 @@ const FILE_TYPES = [
 
 export default function UploadForm({ subjectId }) {
     const { data: categories } = useFetch(() => fileService.getCategories(), []);
+
+    const [semesterId, setSemesterId] = useState(null);
+    const [subjects, setSubjects] = useState([]);
 
     const [form, setForm] = useState({
         subjectId: subjectId || '',
@@ -32,6 +37,14 @@ export default function UploadForm({ subjectId }) {
     const [error, setError] = useState(null);
 
     const needsLink = form.fileType === 'youtube_link';
+
+    useEffect(() => {
+        if (!semesterId) {
+            setSubjects([]);
+            return;
+        }
+        subjectService.getBySemester(semesterId).then(setSubjects);
+    }, [semesterId]);
 
     const handleChange = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
@@ -53,7 +66,7 @@ export default function UploadForm({ subjectId }) {
         return (
             <div className="flex flex-col items-center gap-3 rounded-card bg-success/5 border border-success/20 py-12 text-center">
                 <CheckCircle2 className="h-10 w-10 text-success" />
-                <h3 className="font-display font-bold text-lg">تم استلام ملفك بنجاح 🎉</h3>
+                <h3 className="font-display font-bold text-lg">تم استلام ملفك بنجاح</h3>
                 <p className="max-w-sm text-sm text-muted">
                     الملف دلوقتي قيد المراجعة من الأدمن، وهيظهر في الموقع بمجرد الموافقة عليه.
                 </p>
@@ -64,16 +77,26 @@ export default function UploadForm({ subjectId }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {!subjectId && (
-                <Field label="رقم المادة (Subject ID)">
-                    <input
-                        required
-                        type="number"
-                        value={form.subjectId}
-                        onChange={handleChange('subjectId')}
-                        className="input-field"
-                        placeholder="مثال: 12"
-                    />
-                </Field>
+                <>
+                    <Field label="اختر الفرقة والترم">
+                        <StructurePicker onSemesterSelect={setSemesterId} />
+                    </Field>
+
+                    <Field label="المادة">
+                        <select
+                            required
+                            value={form.subjectId}
+                            onChange={handleChange('subjectId')}
+                            disabled={!semesterId}
+                            className="input-field disabled:opacity-50"
+                        >
+                            <option value="">اختر المادة...</option>
+                            {subjects.map((s) => (
+                                <option key={s.id} value={s.id}>{s.name}</option>
+                            ))}
+                        </select>
+                    </Field>
+                </>
             )}
 
             <Field label="عنوان الملف">
@@ -138,7 +161,7 @@ export default function UploadForm({ subjectId }) {
                     <label className="focus-ring flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-ink-light/15 dark:border-ink-dark/15 p-6 text-center hover:border-primary-500 transition-colors">
                         <UploadCloud className="h-8 w-8 text-muted" />
                         <span className="text-sm text-muted">
-                            {file ? file.name : 'اضغط لاختيار ملف (PDF، صورة، فيديو)'}
+                            {file ? file.name : 'اضغط لاختيار ملف (PDF، صورة)'}
                         </span>
                         <input
                             type="file"
