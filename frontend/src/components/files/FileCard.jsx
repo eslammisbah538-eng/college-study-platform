@@ -6,12 +6,7 @@ export default function FileCard({ file }) {
     const link = file.file_url || file.external_url;
     const isExternal = !file.file_url && !!file.external_url;
     return (
-        
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="focus-ring group flex items-center gap-4 rounded-card border border-ink-light/10 dark:border-ink-dark/10 bg-surface-light dark:bg-surface-dark p-5 transition-all hover:shadow-card-hover hover:-translate-y-1 hover:border-primary-500/40"
-        >
+        <a href={link} target="_blank" rel="noopener noreferrer" className="focus-ring group flex items-center gap-4 rounded-card border border-ink-light/10 dark:border-ink-dark/10 bg-surface-light dark:bg-surface-dark p-5 transition-all hover:shadow-card-hover hover:-translate-y-1 hover:border-primary-500/40">
             <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent-dark">
                 <CategoryIcon icon={file.category_slug} className="h-6 w-6" />
             </span>
