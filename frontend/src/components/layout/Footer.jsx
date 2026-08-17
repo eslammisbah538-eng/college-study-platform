@@ -4,12 +4,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted">
         <p>
           Developed and Designed by{" "}
-          
-            href="https://wa.me/201103023916"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-primary-600 hover:underline"
-          >
+          <a href="https://wa.me/201103023916" target="_blank" rel="noopener noreferrer" className="font-bold text-primary-600 hover:underline">
             Islam Misbah
           </a>
         </p>
