@@ -21,13 +21,10 @@ export default function Home() {
 
     return (
         <div className="flex flex-col gap-14">
-            {/* Hero */}
+                      {/* Hero */}
             <section className="flex flex-col items-center gap-4 rounded-card bg-gradient-to-b from-primary-50 to-transparent dark:from-primary-900/20 px-6 py-14 text-center">
-                <span className="rounded-full bg-accent/20 px-3 py-1 text-xs font-bold text-accent-dark">
-                    كل محتوى الدراسة، في مكان واحد
-                </span>
                 <h1 className="max-w-2xl font-display text-3xl font-black leading-tight sm:text-4xl">
-                    كتب، ملخصات، امتحانات، وفيديوهات — بدون ما تدور تاني
+                    كل ما تحتاجه في مذاكرتك في مكان واحد
                 </h1>
                 <p className="max-w-lg text-muted">
                     اختر فرقتك وترمك ومادتك، ولاقِ كل حاجة محتاجها في صفحة واحدة.
