@@ -127,13 +127,14 @@ const incrementDownloads = async (id) => {
 /**
  * إحصائيات لوحة تحكم الأدمن
  */
-const getDashboardStats = async () => {
+    const getDashboardStats = async () => {
     const { rows } = await query(`
         SELECT
             (SELECT COUNT(*) FROM files WHERE status = 'approved') AS total_files,
             (SELECT COUNT(*) FROM files WHERE status = 'pending') AS pending_files,
             (SELECT COUNT(*) FROM subjects) AS total_subjects,
-            (SELECT COUNT(*) FROM academic_years) AS total_years
+            (SELECT COUNT(*) FROM academic_years) AS total_years,
+            (SELECT COALESCE(SUM(file_size_kb), 0) FROM files WHERE status = 'approved') AS total_storage_kb
     `);
     return rows[0];
 };
