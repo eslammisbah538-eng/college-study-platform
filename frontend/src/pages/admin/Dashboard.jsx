@@ -3,6 +3,7 @@ import { FileCheck2, Clock3, BookOpen, GraduationCap, ArrowLeft } from 'lucide-r
 import { useFetch } from '../../hooks/useFetch';
 import { adminService } from '../../services/adminService';
 import StatsCard from '../../components/admin/StatsCard';
+import StorageCard from '../../components/admin/StorageCard';
 import Card from '../../components/common/Card';
 import Loader from '../../components/common/Loader';
 import ErrorState from '../../components/common/ErrorState';
@@ -26,6 +27,8 @@ export default function Dashboard() {
                 <StatsCard label="إجمالي المواد" value={stats.total_subjects} icon={BookOpen} tone="primary" />
                 <StatsCard label="السنوات الدراسية" value={stats.total_years} icon={GraduationCap} tone="primary" />
             </div>
+
+            <StorageCard usedKb={stats.total_storage_kb} />
 
             <section>
                 <div className="mb-3 flex items-center justify-between">
