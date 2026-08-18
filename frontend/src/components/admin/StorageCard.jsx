@@ -19,7 +19,7 @@ export default function StorageCard({ usedKb }) {
                 </span>
                 <div>
                     <p className="font-bold text-sm">مساحة التخزين</p>
-                    <p className="font-mono text-xs text-muted">
+                         <p className="font-mono text-xs text-muted" dir="ltr">
                         {usedMb.toFixed(1)} MB / {LIMIT_MB} MB
                     </p>
                 </div>
