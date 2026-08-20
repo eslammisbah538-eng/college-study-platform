@@ -13,9 +13,10 @@ const findAllUniversities = async () => {
     return rows;
 };
 const createUniversity = async ({ name }) => {
+    const slug = name.trim().replace(/\s+/g, '-');
     const { rows } = await query(
-        `INSERT INTO universities (name) VALUES ($1) RETURNING *`,
-        [name]
+        `INSERT INTO universities (name, slug) VALUES ($1, $2) RETURNING *`,
+        [name, slug]
     );
     return rows[0];
 };
