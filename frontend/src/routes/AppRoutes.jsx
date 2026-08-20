@@ -3,8 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import AdminLayout from '../layouts/AdminLayout';
 import ProtectedRoute from './ProtectedRoute';
-
+import CollegePage from '../pages/CollegePage';
 import Home from '../pages/Home';
+
 import AcademicYearPage from '../pages/AcademicYearPage';
 import SemesterPage from '../pages/SemesterPage';
 import SubjectPage from '../pages/SubjectPage';
@@ -25,6 +26,7 @@ export default function AppRoutes() {
             {/* ---------- الصفحات العامة ---------- */}
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/colleges/:collegeId" element={<CollegePage />} />
                 <Route path="/years/:yearId" element={<AcademicYearPage />} />
                 <Route path="/semesters/:semesterId" element={<SemesterPage />} />
                 <Route path="/subjects/:id" element={<SubjectPage />} />
