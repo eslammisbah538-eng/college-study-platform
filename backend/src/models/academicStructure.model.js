@@ -30,9 +30,10 @@ const findCollegesByUniversity = async (universityId) => {
     return rows;
 };
 const createCollege = async ({ universityId, name }) => {
+    const slug = name.trim().replace(/\s+/g, '-');
     const { rows } = await query(
-        `INSERT INTO colleges (university_id, name) VALUES ($1, $2) RETURNING *`,
-        [universityId, name]
+        `INSERT INTO colleges (university_id, name, slug) VALUES ($1, $2, $3) RETURNING *`,
+        [universityId, name, slug]
     );
     return rows[0];
 };
