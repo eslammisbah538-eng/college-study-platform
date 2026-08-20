@@ -21,7 +21,6 @@ router.get('/academic-years/:academicYearId/semesters', controller.getSemesters)
 
 router.post('/academic-years', adminAuth, controller.createAcademicYear);
 router.post('/semesters', adminAuth, controller.createSemester);
-router.post('/universities', adminAuth, controller.createUniversity);
-router.post('/colleges', adminAuth, controller.createCollege);
+
 
 module.exports = router;
