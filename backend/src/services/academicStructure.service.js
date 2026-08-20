@@ -6,8 +6,12 @@ const structureModel = require('../models/academicStructure.model');
 
 const getAllUniversities = () => structureModel.findAllUniversities();
 
+const createUniversity = (data) => structureModel.createUniversity(data);
+
 const getCollegesByUniversity = (universityId) =>
     structureModel.findCollegesByUniversity(universityId);
+
+const createCollege = (data) => structureModel.createCollege(data);
 
 const getAcademicYearsByCollege = (collegeId) =>
     structureModel.findAcademicYearsByCollege(collegeId);
@@ -21,7 +25,9 @@ const createSemester = (data) => structureModel.createSemester(data);
 
 module.exports = {
     getAllUniversities,
+     createUniversity,
     getCollegesByUniversity,
+    createCollege,
     getAcademicYearsByCollege,
     getSemestersByAcademicYear,
     createAcademicYear,
