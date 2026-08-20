@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft, TrendingUp, Clock, Building2, GraduationCap } from 'lucide-react';
+import { TrendingUp, Clock, Building2, GraduationCap, ArrowLeft } from 'lucide-react';
 import { useFetch } from '../hooks/useFetch';
 import { structureService } from '../services/structureService';
 import { subjectService } from '../services/subjectService';
@@ -18,6 +18,11 @@ export default function Home() {
     } = useFetch(() => subjectService.getMostViewed(6), []);
     const { data: recentFiles, loading: loadingRecent } = useFetch(() => fileService.getRecent(6), []);
 
+    const { data: colleges, loading: loadingColleges } = useFetch(
+        () => (universities?.[0] ? structureService.getColleges(universities[0].id) : Promise.resolve([])),
+        [universities?.[0]?.id]
+    );
+
     return (
         <div className="flex flex-col gap-14">
             {/* Hero */}
@@ -30,9 +35,31 @@ export default function Home() {
                 </p>
             </section>
 
-            {/* اختيار الكلية ثم الفرقة */}
-            {universities?.[0] && (
-                <CollegesBrowser universityId={universities[0].id} />
+            {/* اختيار الكلية */}
+            {!loadingColleges && colleges && colleges.length > 0 && (
+                <section>
+                    <SectionHeader icon={Building2} title="تصفح حسب الكلية" />
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {colleges.map((college) => (
+                            <Link
+                                key={college.id}
+                                to={`/colleges/${college.id}`}
+                                className="focus-ring group flex items-center gap-4 rounded-2xl border border-ink-light/10 dark:border-ink-dark/10 bg-surface-light dark:bg-surface-dark p-6 shadow-card transition-all hover:-translate-y-1 hover:border-primary-500/40 hover:shadow-card-hover"
+                            >
+                                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-50 dark:bg-primary-900/30 text-primary-500 transition-transform group-hover:scale-105">
+                                    <GraduationCap className="h-7 w-7" />
+                                </span>
+                                <div className="flex-1">
+                                    <h3 className="font-display font-bold group-hover:text-primary-500 transition-colors">
+                                        {college.name}
+                                    </h3>
+                                    <p className="mt-1 text-sm text-muted">استعرض الفرق الدراسية</p>
+                                </div>
+                                <ArrowLeft className="h-4 w-4 text-muted transition-transform group-hover:-translate-x-1 group-hover:text-primary-500" />
+                            </Link>
+                        ))}
+                    </div>
+                </section>
             )}
 
             {/* أكثر المواد استخدامًا */}
@@ -70,62 +97,6 @@ function SectionHeader({ icon: Icon, title }) {
         <div className="mb-4 flex items-center gap-2">
             <Icon className="h-5 w-5 text-primary-500" />
             <h2 className="font-display text-xl font-bold">{title}</h2>
-        </div>
-    );
-}
-
-/**
- * قسم تصفح ثابت: يعرض الكلية دايمًا كخطوة أولى واضحة،
- * وبعد اختيارها يعرض الفرق الدراسية التابعة لها.
- */
-function CollegesBrowser({ universityId }) {
-    const { data: colleges, loading } = useFetch(
-        () => structureService.getColleges(universityId),
-        [universityId]
-    );
-
-    if (loading || !colleges?.length) return null;
-
-    return (
-        <section>
-            <SectionHeader icon={Building2} title="تصفح حسب الكلية" />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {colleges.map((college) => (
-                    <CollegeCard key={college.id} college={college} />
-                ))}
-            </div>
-        </section>
-    );
-}
-
-function CollegeCard({ college }) {
-    const { data: years } = useFetch(
-        () => structureService.getAcademicYears(college.id),
-        [college.id]
-    );
-
-    return (
-        <div className="rounded-2xl border border-ink-light/10 dark:border-ink-dark/10 bg-surface-light dark:bg-surface-dark p-6 shadow-card">
-            <div className="mb-4 flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/30 text-primary-500">
-                    <GraduationCap className="h-6 w-6" />
-                </span>
-                <h3 className="font-display font-bold">{college.name}</h3>
-            </div>
-            {years?.length > 0 && (
-                <div className="flex flex-col gap-2">
-                    {years.map((year) => (
-                        <Link
-                            key={year.id}
-                            to={`/years/${year.id}`}
-                            className="focus-ring group flex items-center justify-between rounded-xl border border-ink-light/8 dark:border-ink-dark/8 px-4 py-3 text-sm font-bold transition-all hover:border-primary-500/40 hover:bg-primary-50 dark:hover:bg-primary-900/10"
-                        >
-                            {year.name}
-                            <ArrowLeft className="h-4 w-4 text-muted transition-transform group-hover:-translate-x-1 group-hover:text-primary-500" />
-                        </Link>
-                    ))}
-                </div>
-            )}
         </div>
     );
 }
