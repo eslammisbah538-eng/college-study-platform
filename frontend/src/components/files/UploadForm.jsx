@@ -144,14 +144,14 @@ export default function UploadForm({ subjectId }) {
             </Field>
 
             {needsLink ? (
-                <Field label="رابط اليوتيوب">
+                <Field label="رابط الفيديو">
                     <input
                         required
                         type="url"
                         value={form.externalUrl}
                         onChange={handleChange('externalUrl')}
                         className="input-field"
-                        placeholder="https://youtube.com/watch?v=..."
+                       placeholder="https://example.com/video..."
                     />
                 </Field>
             ) : (
