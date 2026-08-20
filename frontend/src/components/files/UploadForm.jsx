@@ -11,9 +11,8 @@ import { useEffect } from 'react';
 
 const FILE_TYPES = [
     { value: 'pdf', label: 'PDF' },
-    { value: 'youtube_link', label: 'رابط يوتيوب' },
+    { value: 'link', label: 'رابط فيديو' },
     { value: 'image', label: 'صورة' },
-    { value: 'code', label: 'كود' },
 ];
 
 export default function UploadForm({ subjectId }) {
@@ -36,8 +35,7 @@ export default function UploadForm({ subjectId }) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(null);
 
-    const needsLink = form.fileType === 'youtube_link';
-
+   const needsLink = form.fileType === 'link';
     useEffect(() => {
         if (!semesterId) {
             setSubjects([]);
