@@ -15,11 +15,7 @@ export default function Home() {
     const { data: mostViewed, loading: loadingViewed } = useFetch(() => subjectService.getMostViewed(6), []);
     const { data: recentFiles, loading: loadingRecent } = useFetch(() => fileService.getRecent(6), []);
 
-    const { data: colleges, loading: loadingColleges } = useFetch(
-        () => (universities?.[0] ? structureService.getColleges(universities[0].id) : Promise.resolve([])),
-        [universities?.[0]?.id]
-    );
-
+ 
     const showMostViewed = mostViewed && mostViewed.length >= MIN_ITEMS_TO_SHOW;
     const showRecentFiles = recentFiles && recentFiles.length >= MIN_ITEMS_TO_SHOW;
 
