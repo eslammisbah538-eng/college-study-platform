@@ -159,7 +159,7 @@ export default function UploadForm({ subjectId }) {
                     <label className="focus-ring flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-ink-light/15 dark:border-ink-dark/15 p-6 text-center hover:border-primary-500 transition-colors">
                         <UploadCloud className="h-8 w-8 text-muted" />
                         <span className="text-sm text-muted">
-                            {file ? file.name : 'اضغط لاختيار ملف (PDF، صورة)'}
+                           {file ? file.name : `اضغط لاختيار ${form.fileType === 'pdf' ? 'ملف PDF' : form.fileType === 'image' ? 'صورة' : 'ملف'}`}
                         </span>
                         <input
                             type="file"
