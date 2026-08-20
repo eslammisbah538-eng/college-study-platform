@@ -1,9 +1,6 @@
 INSERT INTO categories (name, slug, icon) VALUES
-    ('كتب',        'books',         'book-open'),
-    ('ملفات PDF',  'pdf-files',      'file-text'),
-    ('روابط يوتيوب', 'youtube-links', 'youtube'),
-    ('ملخصات',     'summaries',      'notebook-pen'),
-    ('امتحانات',   'exams',          'clipboard-check'),
-    ('مشاريع',     'projects',       'folder-kanban'),
-    ('أكواد',      'codes',          'code')
+    ('ملخصات',      'summaries',       'notebook-pen'),
+    ('كتب',         'books',           'book-open'),
+    ('امتحانات',    'exams',           'clipboard-check'),
+    ('روابط فيديو', 'video-links',     'video')
 ON CONFLICT (slug) DO NOTHING;
