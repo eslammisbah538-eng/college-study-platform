@@ -12,6 +12,13 @@ const findAllUniversities = async () => {
     const { rows } = await query('SELECT * FROM universities ORDER BY name');
     return rows;
 };
+const createUniversity = async ({ name }) => {
+    const { rows } = await query(
+        `INSERT INTO universities (name) VALUES ($1) RETURNING *`,
+        [name]
+    );
+    return rows[0];
+};
 
 // ---------- Colleges ----------
 const findCollegesByUniversity = async (universityId) => {
@@ -20,6 +27,13 @@ const findCollegesByUniversity = async (universityId) => {
         [universityId]
     );
     return rows;
+};
+const createCollege = async ({ universityId, name }) => {
+    const { rows } = await query(
+        `INSERT INTO colleges (university_id, name) VALUES ($1, $2) RETURNING *`,
+        [universityId, name]
+    );
+    return rows[0];
 };
 
 // ---------- Academic Years ----------
@@ -60,7 +74,9 @@ const createSemester = async ({ academicYearId, name, orderIndex }) => {
 
 module.exports = {
     findAllUniversities,
+    createUniversity,
     findCollegesByUniversity,
+    createCollege,
     findAcademicYearsByCollege,
     createAcademicYear,
     findSemestersByAcademicYear,
