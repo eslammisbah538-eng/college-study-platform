@@ -11,7 +11,7 @@ const uploadFileSchema = z.object({
     categoryId: z.coerce.number().int().positive({ message: 'categoryId مطلوب' }),
     title: z.string().trim().min(3, 'العنوان يجب أن يكون 3 أحرف على الأقل').max(200),
     description: z.string().trim().max(1000).optional(),
-    fileType: z.enum(['pdf', 'video', 'youtube_link', 'image', 'code', 'other']),
+    fileType: z.enum(['pdf', 'link', 'image']),
     externalUrl: z.string().url('رابط غير صحيح').optional(),
     uploadedByName: z.string().trim().max(100).optional(),
 });
