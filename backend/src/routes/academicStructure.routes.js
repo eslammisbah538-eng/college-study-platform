@@ -15,7 +15,9 @@ const controller = require('../controllers/academicStructure.controller');
 const adminAuth = require('../middleware/adminAuth');
 
 router.get('/universities', controller.getUniversities);
+router.post('/universities', adminAuth, controller.createUniversity);
 router.get('/universities/:universityId/colleges', controller.getColleges);
+router.post('/colleges', adminAuth, controller.createCollege);
 router.get('/colleges/:collegeId/academic-years', controller.getAcademicYears);
 router.get('/academic-years/:academicYearId/semesters', controller.getSemesters);
 
