@@ -18,7 +18,9 @@ router.get('/universities', controller.getUniversities);
 router.post('/universities', adminAuth, controller.createUniversity);
 router.get('/universities/:universityId/colleges', controller.getColleges);
 router.post('/colleges', adminAuth, controller.createCollege);
-router.get('/colleges/:collegeId/academic-years', controller.getAcademicYears);
+router.get('/colleges/:collegeId/departments', controller.getDepartments);
+router.post('/departments', adminAuth, controller.createDepartment);
+router.get('/departments/:departmentId/academic-years', controller.getAcademicYears);
 router.get('/academic-years/:academicYearId/semesters', controller.getSemesters);
 
 router.post('/academic-years', adminAuth, controller.createAcademicYear);
