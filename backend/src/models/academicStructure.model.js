@@ -38,20 +38,38 @@ const createCollege = async ({ universityId, name }) => {
     return rows[0];
 };
 
-// ---------- Academic Years ----------
-const findAcademicYearsByCollege = async (collegeId) => {
+// ---------- Departments ----------
+const findDepartmentsByCollege = async (collegeId) => {
     const { rows } = await query(
-        'SELECT * FROM academic_years WHERE college_id = $1 ORDER BY order_index',
+        'SELECT * FROM departments WHERE college_id = $1 ORDER BY name',
         [collegeId]
     );
     return rows;
 };
 
-const createAcademicYear = async ({ collegeId, name, orderIndex }) => {
+const createDepartment = async ({ collegeId, name }) => {
+    const slug = name.trim().replace(/\s+/g, '-');
     const { rows } = await query(
-        `INSERT INTO academic_years (college_id, name, order_index)
+        `INSERT INTO departments (college_id, name, slug) VALUES ($1, $2, $3) RETURNING *`,
+        [collegeId, name, slug]
+    );
+    return rows[0];
+};
+
+// ---------- Academic Years ----------
+const findAcademicYearsByDepartment = async (departmentId) => {
+    const { rows } = await query(
+        'SELECT * FROM academic_years WHERE department_id = $1 ORDER BY order_index',
+        [departmentId]
+    );
+    return rows;
+};
+
+const createAcademicYear = async ({ departmentId, name, orderIndex }) => {
+    const { rows } = await query(
+        `INSERT INTO academic_years (department_id, name, order_index)
          VALUES ($1, $2, $3) RETURNING *`,
-        [collegeId, name, orderIndex]
+        [departmentId, name, orderIndex]
     );
     return rows[0];
 };
@@ -73,14 +91,16 @@ const createSemester = async ({ academicYearId, name, orderIndex }) => {
     );
     return rows[0];
 };
-
 module.exports = {
     findAllUniversities,
     createUniversity,
     findCollegesByUniversity,
     createCollege,
-    findAcademicYearsByCollege,
+    findDepartmentsByCollege,
+    createDepartment,
+    findAcademicYearsByDepartment,
     createAcademicYear,
     findSemestersByAcademicYear,
     createSemester,
 };
+
