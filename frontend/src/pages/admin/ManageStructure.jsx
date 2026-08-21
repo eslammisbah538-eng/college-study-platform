@@ -236,7 +236,41 @@ function AddCollegeForm({ universityId, onAdded }) {
     );
 }
 
-function AddYearForm({ collegeId, existingCount, onAdded }) {
+
+function AddDepartmentForm({ collegeId, onAdded }) {
+    const [name, setName] = useState('');
+    const [saving, setSaving] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        try {
+            await structureService.createDepartment({ collegeId, name });
+            setName('');
+            onAdded();
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+            <input
+                required
+                className="input-field"
+                placeholder="اسم قسم جديد"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />
+            <Button type="submit" disabled={saving}>
+                <Plus className="h-4 w-4" />
+                إضافة
+            </Button>
+        </form>
+    );
+}
+
+function AddYearForm({ departmentId, existingCount, onAdded }) {
     const [name, setName] = useState('');
     const [saving, setSaving] = useState(false);
 
