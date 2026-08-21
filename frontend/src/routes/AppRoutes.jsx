@@ -28,6 +28,7 @@ export default function AppRoutes() {
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/universities/:universityId" element={<UniversityPage />} />
+                 <Route path="/colleges/:collegeId" element={<CollegePage />} />
                 <Route path="/years/:yearId" element={<AcademicYearPage />} />
                 <Route path="/semesters/:semesterId" element={<SemesterPage />} />
                 <Route path="/subjects/:id" element={<SubjectPage />} />
