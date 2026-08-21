@@ -13,8 +13,11 @@ const getCollegesByUniversity = (universityId) =>
 
 const createCollege = (data) => structureModel.createCollege(data);
 
-const getAcademicYearsByCollege = (collegeId) =>
-    structureModel.findAcademicYearsByCollege(collegeId);
+const getDepartmentsByCollege = (collegeId) => structureModel.findDepartmentsByCollege(collegeId);
+const createDepartment = (data) => structureModel.createDepartment(data);
+
+const getAcademicYearsByDepartment = (departmentId) =>
+    structureModel.findAcademicYearsByDepartment(departmentId);
 
 const getSemestersByAcademicYear = (academicYearId) =>
     structureModel.findSemestersByAcademicYear(academicYearId);
@@ -25,11 +28,13 @@ const createSemester = (data) => structureModel.createSemester(data);
 
 module.exports = {
     getAllUniversities,
-     createUniversity,
+    createUniversity,
     getCollegesByUniversity,
     createCollege,
-    getAcademicYearsByCollege,
-    getSemestersByAcademicYear,
+    getDepartmentsByCollege,
+    createDepartment,
+    getAcademicYearsByDepartment,
     createAcademicYear,
+    getSemestersByAcademicYear,
     createSemester,
 };
