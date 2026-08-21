@@ -16,7 +16,7 @@ export default function CollegePage() {
     return (
         <div>
             <Breadcrumb items={[{ label: 'الأقسام' }]} />
-            <h1 className="mb-6 font-display text-2xl font-bold">اختر قسمك</h1>
+                        <h1 className="mb-6 font-display text-2xl font-bold">اختر القسم</h1>
             {loading && <Loader />}
             {error && <ErrorState message={error} onRetry={refetch} />}
             {departments && departments.length === 0 && (
