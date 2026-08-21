@@ -31,14 +31,14 @@ export default function Home() {
                 </p>
             </section>
 
-            {/* اختيار الكلية — العنصر الرئيسي في الصفحة */}
-            {!loadingColleges && colleges && colleges.length > 0 && (
+                        {/* اختيار الجامعة — العنصر الرئيسي في الصفحة */}
+            {universities && universities.length > 0 && (
                 <section>
-                    <div className={`grid gap-5 ${colleges.length === 1 ? 'grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
-                        {colleges.map((college) => (
+                    <div className={`grid gap-5 ${universities.length === 1 ? 'grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+                        {universities.map((university) => (
                             <Link
-                                key={college.id}
-                                to={`/colleges/${college.id}`}
+                                key={university.id}
+                                to={`/universities/${university.id}`}
                                 className="focus-ring group flex items-center gap-5 rounded-3xl border border-ink-light/10 dark:border-ink-dark/10 bg-surface-light dark:bg-surface-dark p-8 shadow-card transition-all hover:-translate-y-1.5 hover:border-primary-500/50 hover:shadow-card-hover"
                             >
                                 <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-primary-50 dark:bg-primary-900/30 text-primary-500 transition-transform group-hover:scale-105">
@@ -46,9 +46,9 @@ export default function Home() {
                                 </span>
                                 <div className="flex-1">
                                     <h2 className="font-display text-xl font-bold group-hover:text-primary-500 transition-colors">
-                                        {college.name}
+                                        {university.name}
                                     </h2>
-                                    <p className="mt-1 text-sm text-muted">اضغط هنا للبدء واستعراض الفرق الدراسية</p>
+                                    <p className="mt-1 text-sm text-muted">اضغط هنا للبدء واستعراض الكليات</p>
                                 </div>
                                 <ArrowLeft className="h-6 w-6 shrink-0 text-muted transition-transform group-hover:-translate-x-1 group-hover:text-primary-500" />
                             </Link>
