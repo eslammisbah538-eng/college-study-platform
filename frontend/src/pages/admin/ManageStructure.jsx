@@ -56,6 +56,7 @@ export default function ManageStructure() {
                                 onClick={() => {
                                     setSelectedUniversityId(uni.id);
                                     setSelectedCollegeId(null);
+                                    setSelectedDepartmentId(null);
                                     setSelectedYearId(null);
                                 }}
                                 className={`p-3 rounded-lg cursor-pointer transition-colors ${
@@ -278,8 +279,8 @@ function AddYearForm({ departmentId, existingCount, onAdded }) {
         e.preventDefault();
         setSaving(true);
         try {
-            await structureService.createAcademicYear({
-                collegeId,
+             await structureService.createAcademicYear({
+                departmentId,
                 name,
                 orderIndex: existingCount + 1,
             });
