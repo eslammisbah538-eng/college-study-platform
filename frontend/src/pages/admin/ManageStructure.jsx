@@ -10,6 +10,7 @@ import EmptyState from '../../components/common/EmptyState';
 export default function ManageStructure() {
     const [selectedUniversityId, setSelectedUniversityId] = useState(null);
     const [selectedCollegeId, setSelectedCollegeId] = useState(null);
+    const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
     const [selectedYearId, setSelectedYearId] = useState(null);
 
     // جلب الجامعات
@@ -24,10 +25,16 @@ export default function ManageStructure() {
         [selectedUniversityId]
     );
 
+    // جلب الأقسام
+    const { data: departments, loading: loadingDepartments, refetch: refetchDepartments } = useFetch(
+        () => (selectedCollegeId ? structureService.getDepartments(selectedCollegeId) : Promise.resolve([])),
+        [selectedCollegeId]
+    );
+
     // جلب السنوات
     const { data: years, loading: loadingYears, refetch: refetchYears } = useFetch(
-        () => (selectedCollegeId ? structureService.getAcademicYears(selectedCollegeId) : Promise.resolve([])),
-        [selectedCollegeId]
+        () => (selectedDepartmentId ? structureService.getAcademicYears(selectedDepartmentId) : Promise.resolve([])),
+        [selectedDepartmentId]
     );
 
     return (
@@ -66,7 +73,6 @@ export default function ManageStructure() {
                 )}
                 {selectedUniversityId && <AddUniversityForm onAdded={refetchUniversities} />}
             </Card>
-
             {/* إدارة الكليات */}
             {selectedUniversityId && (
                 <Card className="p-5">
@@ -82,6 +88,7 @@ export default function ManageStructure() {
                                     key={college.id}
                                     onClick={() => {
                                         setSelectedCollegeId(college.id);
+                                        setSelectedDepartmentId(null);
                                         setSelectedYearId(null);
                                     }}
                                     className={`p-3 rounded-lg cursor-pointer transition-colors ${
@@ -101,8 +108,42 @@ export default function ManageStructure() {
                 </Card>
             )}
 
-            {/* إدارة السنوات */}
+            {/* إدارة الأقسام */}
             {selectedCollegeId && (
+                <Card className="p-5">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="font-bold text-lg">الأقسام</h2>
+                    </div>
+                    {loadingDepartments ? (
+                        <Loader />
+                    ) : departments && departments.length > 0 ? (
+                        <div className="space-y-2">
+                            {departments.map((department) => (
+                                <div
+                                    key={department.id}
+                                    onClick={() => {
+                                        setSelectedDepartmentId(department.id);
+                                        setSelectedYearId(null);
+                                    }}
+                                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                                        selectedDepartmentId === department.id
+                                            ? 'bg-primary-500 text-white'
+                                            : 'bg-ink-light/5 dark:bg-ink-dark/5 hover:bg-ink-light/10 dark:hover:bg-ink-dark/10'
+                                    }`}
+                                >
+                                    {department.name}
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <EmptyState title="لا توجد أقسام" />
+                    )}
+                    <AddDepartmentForm collegeId={selectedCollegeId} onAdded={refetchDepartments} />
+                </Card>
+            )}
+           
+            {/* إدارة السنوات */}
+            {selectedDepartmentId && (
                 <Card className="p-5">
                     <h2 className="font-bold text-lg mb-4">السنوات الدراسية</h2>
                     {loadingYears ? (
@@ -122,7 +163,7 @@ export default function ManageStructure() {
                     ) : (
                         <EmptyState title="لا توجد سنوات دراسية" />
                     )}
-                    <AddYearForm collegeId={selectedCollegeId} existingCount={years?.length || 0} onAdded={refetchYears} />
+                    <AddYearForm departmentId={selectedDepartmentId} existingCount={years?.length || 0} onAdded={refetchYears} />
                 </Card>
             )}
         </div>
