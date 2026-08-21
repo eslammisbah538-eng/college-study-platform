@@ -24,9 +24,17 @@ const createCollege = asyncHandler(async (req, res) => {
     const college = await structureService.createCollege(req.body);
     new ApiResponse(201, college, 'تم إضافة الكلية بنجاح').send(res);
 });
+const getDepartments = asyncHandler(async (req, res) => {
+    const departments = await structureService.getDepartmentsByCollege(req.params.collegeId);
+    new ApiResponse(200, departments).send(res);
+});
 
+const createDepartment = asyncHandler(async (req, res) => {
+    const department = await structureService.createDepartment(req.body);
+    new ApiResponse(201, department, 'تم إضافة القسم بنجاح').send(res);
+});
 const getAcademicYears = asyncHandler(async (req, res) => {
-    const years = await structureService.getAcademicYearsByCollege(req.params.collegeId);
+    const years = await structureService.getAcademicYearsByDepartment(req.params.departmentId);
     new ApiResponse(200, years).send(res);
 });
 
@@ -45,12 +53,13 @@ const createSemester = asyncHandler(async (req, res) => {
     const semester = await structureService.createSemester(req.body);
     new ApiResponse(201, semester, 'تم إضافة الترم بنجاح').send(res);
 });
-
 module.exports = {
     getUniversities,
     createUniversity,
     getColleges,
     createCollege,
+    getDepartments,
+    createDepartment,
     getAcademicYears,
     getSemesters,
     createAcademicYear,
