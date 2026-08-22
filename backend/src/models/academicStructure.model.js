@@ -20,6 +20,9 @@ const createUniversity = async ({ name }) => {
     );
     return rows[0];
 };
+const deleteUniversity = async (id) => {
+    await query('DELETE FROM universities WHERE id = $1', [id]);
+};
 
 // ---------- Colleges ----------
 const findCollegesByUniversity = async (universityId) => {
@@ -38,6 +41,10 @@ const createCollege = async ({ universityId, name }) => {
     return rows[0];
 };
 
+
+const deleteCollege = async (id) => {
+    await query('DELETE FROM colleges WHERE id = $1', [id]);
+};
 // ---------- Departments ----------
 const findDepartmentsByCollege = async (collegeId) => {
     const { rows } = await query(
@@ -54,6 +61,10 @@ const createDepartment = async ({ collegeId, name }) => {
         [collegeId, name, slug]
     );
     return rows[0];
+};
+
+const deleteDepartment = async (id) => {
+    await query('DELETE FROM departments WHERE id = $1', [id]);
 };
 
 // ---------- Academic Years ----------
@@ -73,6 +84,9 @@ const createAcademicYear = async ({ departmentId, name, orderIndex }) => {
     );
     return rows[0];
 };
+const deleteAcademicYear = async (id) => {
+    await query('DELETE FROM academic_years WHERE id = $1', [id]);
+};
 
 // ---------- Semesters ----------
 const findSemestersByAcademicYear = async (academicYearId) => {
@@ -91,16 +105,25 @@ const createSemester = async ({ academicYearId, name, orderIndex }) => {
     );
     return rows[0];
 };
+const deleteSemester = async (id) => {
+    await query('DELETE FROM semesters WHERE id = $1', [id]);
+};
+
 module.exports = {
     findAllUniversities,
     createUniversity,
+    deleteUniversity,
     findCollegesByUniversity,
     createCollege,
+    deleteCollege,
     findDepartmentsByCollege,
     createDepartment,
+    deleteDepartment,
     findAcademicYearsByDepartment,
     createAcademicYear,
+    deleteAcademicYear,
     findSemestersByAcademicYear,
     createSemester,
+    deleteSemester,
 };
 
