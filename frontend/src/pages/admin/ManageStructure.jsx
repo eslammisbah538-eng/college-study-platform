@@ -7,6 +7,12 @@ import Card from '../../components/common/Card';
 import Loader from '../../components/common/Loader';
 import EmptyState from '../../components/common/EmptyState';
 
+const confirmAndDelete = async (message, deleteFn, id, onDone) => {
+    if (!window.confirm(message)) return;
+    await deleteFn(id);
+    onDone();
+};
+
 export default function ManageStructure() {
     const [selectedUniversityId, setSelectedUniversityId] = useState(null);
     const [selectedCollegeId, setSelectedCollegeId] = useState(null);
@@ -50,24 +56,53 @@ export default function ManageStructure() {
                     <Loader />
                 ) : universities && universities.length > 0 ? (
                     <div className="space-y-2">
-                        {universities.map((uni) => (
+
+
+
+                                            {universities.map((uni) => (
                             <div
                                 key={uni.id}
-                                onClick={() => {
-                                    setSelectedUniversityId(uni.id);
-                                    setSelectedCollegeId(null);
-                                    setSelectedDepartmentId(null);
-                                    setSelectedYearId(null);
-                                }}
-                                className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                                className={`flex items-center justify-between gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
                                     selectedUniversityId === uni.id
                                         ? 'bg-primary-500 text-white'
                                         : 'bg-ink-light/5 dark:bg-ink-dark/5 hover:bg-ink-light/10 dark:hover:bg-ink-dark/10'
                                 }`}
                             >
-                                {uni.name}
+                                <span
+                                    className="flex-1"
+                                    onClick={() => {
+                                        setSelectedUniversityId(uni.id);
+                                        setSelectedCollegeId(null);
+                                        setSelectedDepartmentId(null);
+                                        setSelectedYearId(null);
+                                    }}
+                                >
+                                    {uni.name}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        confirmAndDelete(
+                                            `هل أنت متأكد من حذف "${uni.name}"؟ سيتم حذف كل الكليات والأقسام والفرق التابعة لها.`,
+                                            structureService.deleteUniversity,
+                                            uni.id,
+                                            () => {
+                                                if (selectedUniversityId === uni.id) setSelectedUniversityId(null);
+                                                refetchUniversities();
+                                            }
+                                        );
+                                    }}
+                                    className="shrink-0 rounded-lg p-1.5 hover:bg-red-500/20 hover:text-red-500"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
                             </div>
                         ))}
+
+
+
+                        
                     </div>
                 ) : (
                     <EmptyState title="لا توجد جامعات" />
@@ -87,18 +122,40 @@ export default function ManageStructure() {
                             {colleges.map((college) => (
                                 <div
                                     key={college.id}
-                                    onClick={() => {
-                                        setSelectedCollegeId(college.id);
-                                        setSelectedDepartmentId(null);
-                                        setSelectedYearId(null);
-                                    }}
-                                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                                    className={`flex items-center justify-between gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
                                         selectedCollegeId === college.id
                                             ? 'bg-primary-500 text-white'
                                             : 'bg-ink-light/5 dark:bg-ink-dark/5 hover:bg-ink-light/10 dark:hover:bg-ink-dark/10'
                                     }`}
                                 >
-                                    {college.name}
+                                    <span
+                                        className="flex-1"
+                                        onClick={() => {
+                                            setSelectedCollegeId(college.id);
+                                            setSelectedDepartmentId(null);
+                                            setSelectedYearId(null);
+                                        }}
+                                    >
+                                        {college.name}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            confirmAndDelete(
+                                                `هل أنت متأكد من حذف "${college.name}"؟ سيتم حذف كل الأقسام والفرق التابعة لها.`,
+                                                structureService.deleteCollege,
+                                                college.id,
+                                                () => {
+                                                    if (selectedCollegeId === college.id) setSelectedCollegeId(null);
+                                                    refetchColleges();
+                                                }
+                                            );
+                                        }}
+                                        className="shrink-0 rounded-lg p-1.5 hover:bg-red-500/20 hover:text-red-500"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -122,17 +179,39 @@ export default function ManageStructure() {
                             {departments.map((department) => (
                                 <div
                                     key={department.id}
-                                    onClick={() => {
-                                        setSelectedDepartmentId(department.id);
-                                        setSelectedYearId(null);
-                                    }}
-                                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                                    className={`flex items-center justify-between gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
                                         selectedDepartmentId === department.id
                                             ? 'bg-primary-500 text-white'
                                             : 'bg-ink-light/5 dark:bg-ink-dark/5 hover:bg-ink-light/10 dark:hover:bg-ink-dark/10'
                                     }`}
                                 >
-                                    {department.name}
+                                    <span
+                                        className="flex-1"
+                                        onClick={() => {
+                                            setSelectedDepartmentId(department.id);
+                                            setSelectedYearId(null);
+                                        }}
+                                    >
+                                        {department.name}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            confirmAndDelete(
+                                                `هل أنت متأكد من حذف "${department.name}"؟ سيتم حذف كل الفرق والترمات التابعة له.`,
+                                                structureService.deleteDepartment,
+                                                department.id,
+                                                () => {
+                                                    if (selectedDepartmentId === department.id) setSelectedDepartmentId(null);
+                                                    refetchDepartments();
+                                                }
+                                            );
+                                        }}
+                                        className="shrink-0 rounded-lg p-1.5 hover:bg-red-500/20 hover:text-red-500"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -329,20 +408,50 @@ function YearCard({ year, isSelected, onSelect, onUpdated }) {
         }
     };
 
+    const handleDeleteSemester = async (e, semester) => {
+        e.stopPropagation();
+        await confirmAndDelete(
+            `هل أنت متأكد من حذف "${semester.name}"؟`,
+            structureService.deleteSemester,
+            semester.id,
+            refetch
+        );
+    };
+
     return (
         <Card className={`p-5 cursor-pointer transition-all ${isSelected ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : ''}`} onClick={onSelect}>
-            <h3 className="mb-3 font-bold">{year.name}</h3>
+            <div className="mb-3 flex items-center justify-between">
+                <h3 className="font-bold">{year.name}</h3>
+                <button
+                    type="button"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        confirmAndDelete(
+                            `هل أنت متأكد من حذف "${year.name}"؟ سيتم حذف كل الترمات التابعة لها.`,
+                            structureService.deleteAcademicYear,
+                            year.id,
+                            onUpdated
+                        );
+                    }}
+                    className="shrink-0 rounded-lg p-1.5 hover:bg-red-500/20 hover:text-red-500"
+                >
+                    <Trash2 className="h-4 w-4" />
+                </button>
+            </div>
 
             <div className="mb-3 flex flex-wrap gap-2">
                 {semesters?.map((s) => (
-                    <span key={s.id} className="rounded-full bg-primary-50 dark:bg-primary-900/20 px-3 py-1 text-xs font-bold text-primary-600">
+                    <span key={s.id} className="flex items-center gap-1.5 rounded-full bg-primary-50 dark:bg-primary-900/20 px-3 py-1 text-xs font-bold text-primary-600">
                         {s.name}
+                        <button type="button" onClick={(e) => handleDeleteSemester(e, s)} className="hover:text-red-500">
+                            <X className="h-3 w-3" />
+                        </button>
                     </span>
                 ))}
                 {semesters?.length === 0 && <span className="text-xs text-muted">لا توجد ترمات</span>}
             </div>
 
-            <form onSubmit={handleAddSemester} className="flex gap-2">
+            <form onSubmit={handleAddSemester} className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                 <input
                     required
                     className="input-field text-sm"
